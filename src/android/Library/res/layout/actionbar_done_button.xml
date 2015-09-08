@@ -27,8 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingRight="20dp"
-        android:drawableLeft="@drawable/ic_action_done_light"
+        android:drawableLeft="@drawable/ic_action_done_dark"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="@string/done" />
+        android:text="@string/done"
+        android:textColor="#ffffffff" />
 </FrameLayout>

@@ -3,25 +3,25 @@
  *
  * All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following  conditions are met:
  *
- *   Redistributions of source code must retain the above copyright notice, 
+ *   Redistributions of source code must retain the above copyright notice,
  *      this list of conditions and the following disclaimer.
- *   Redistributions in binary form must reproduce the above copyright notice, 
- *      this list of conditions and the following  disclaimer in the 
+ *   Redistributions in binary form must reproduce the above copyright notice,
+ *      this list of conditions and the following  disclaimer in the
  *      documentation and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR  BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDIN G NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR  BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDIN G NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH  DAMAGE
  *
  * Code modified by Andrew Stephan for Sync OnSet
@@ -36,7 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -96,13 +96,13 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private static final int CURSORLOADER_THUMBS = 0;
     private static final int CURSORLOADER_REAL = 1;
 
-    private Map<String, Integer> fileNames = new HashMap<String, Integer>();
+    private Map<String, Integer> fileNames = new LinkedHashMap<String, Integer>();
 
     private SparseBooleanArray checkStatus = new SparseBooleanArray();
 
     private int maxImages;
     private int maxImageCount;
-    
+
     private int desiredWidth;
     private int desiredHeight;
     private int quality;
@@ -111,11 +111,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
     private final ImageFetcher fetcher = new ImageFetcher();
 
-    private int selectedColor = 0xff32b2e1;
+    private int selectedColor = 0xff9CE6EB;
     private boolean shouldRequestThumb = true;
-    
+
     private FakeR fakeR;
-    
+
     private ProgressDialog progress;
 
     @Override
@@ -133,7 +133,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
-        
+
         colWidth = width / 4;
 
         gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
@@ -173,10 +173,10 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
-        progress.setTitle("Processing Images");
-        progress.setMessage("This may take a few moments");
+        progress.setTitle("Traitement des images");
+        progress.setMessage("Cette opération peut prendre quelques secondes");
     }
-    
+
     @Override
     public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
         String name = getImageName(position);
@@ -189,10 +189,10 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Maximum " + maxImageCount + " Photos");
-            builder.setMessage("You can only select " + maxImageCount + " photos at a time.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) { 
+            builder.setTitle(maxImageCount + " Photos Maximum");
+            builder.setMessage("Vous ne pouvez pas sélectionner plus de " + maxImageCount + " photos.");
+            builder.setPositiveButton("Continuer", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
@@ -206,11 +206,13 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 maxImages--;
                 ImageView imageView = (ImageView)view;
                 if (android.os.Build.VERSION.SDK_INT>=16) {
-                  imageView.setImageAlpha(128);
+                  imageView.setImageAlpha(76);
                 } else {
-                  imageView.setAlpha(128);
+                  imageView.setAlpha(76);
                 }
                 view.setBackgroundColor(selectedColor);
+                view.setBackgroundResource(R.drawable.ic_action_check);
+                // gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
             }
         } else {
             fileNames.remove(name);
@@ -285,7 +287,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             actualimagecursor = null;
         }
     }
-    
+
     public void cancelClicked(View ignored) {
         setResult(RESULT_CANCELED);
         finish();
@@ -304,8 +306,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             new ResizeImagesTask().execute(fileNames.entrySet());
         }
     }
-    
-    
+
+
     /*********************
      * Helper Methods
      ********************/
@@ -370,7 +372,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
         return name;
     }
-    
+
     private int getImageRotation(int position) {
         actualimagecursor.moveToPosition(position);
         int rotation = 0;
@@ -382,13 +384,13 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
         return rotation;
     }
-    
+
     public boolean isChecked(int position) {
         boolean ret = checkStatus.get(position);
         return ret;
     }
 
-    
+
     /*********************
     * Nested Classes
     ********************/
@@ -402,8 +404,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
     }
-    
-    
+
+
     private class ImageAdapter extends BaseAdapter {
         private final Bitmap mPlaceHolderBitmap;
 
@@ -458,16 +460,17 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             final int rotate = imagecursor.getInt(image_column_orientation);
             if (isChecked(pos)) {
                 if (android.os.Build.VERSION.SDK_INT>=16) {
-                  imageView.setImageAlpha(128);
+                  imageView.setImageAlpha(76);
                 } else {
-                  imageView.setAlpha(128);	
+                  imageView.setAlpha(76);
                 }
                 imageView.setBackgroundColor(selectedColor);
+                imageView.setBackgroundResource(R.drawable.ic_action_check);
             } else {
                 if (android.os.Build.VERSION.SDK_INT>=16) {
                   imageView.setImageAlpha(255);
                 } else {
-                  imageView.setAlpha(255);	
+                  imageView.setAlpha(255);
                 }
                 imageView.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -478,8 +481,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             return imageView;
         }
     }
-    
-    
+
+
     private class ResizeImagesTask extends AsyncTask<Set<Entry<String, Integer>>, Void, ArrayList<String>> {
         private Exception asyncTaskError = null;
 
@@ -487,76 +490,16 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         protected ArrayList<String> doInBackground(Set<Entry<String, Integer>>... fileSets) {
             Set<Entry<String, Integer>> fileNames = fileSets[0];
             ArrayList<String> al = new ArrayList<String>();
-            try {
-                Iterator<Entry<String, Integer>> i = fileNames.iterator();
-                Bitmap bmp;
-                while(i.hasNext()) {
-                    Entry<String, Integer> imageInfo = i.next();
-                    File file = new File(imageInfo.getKey());
-                    int rotate = imageInfo.getValue().intValue();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 1;
-                    options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                    int width = options.outWidth;
-                    int height = options.outHeight;
-                    float scale = calculateScale(width, height);
-                    if (scale < 1) {
-                        int finalWidth = (int)(width * scale);
-                        int finalHeight = (int)(height * scale);
-                        int inSampleSize = calculateInSampleSize(options, finalWidth, finalHeight);
-                        options = new BitmapFactory.Options();
-                        options.inSampleSize = inSampleSize;
-                        try {
-                            bmp = this.tryToGetBitmap(file, options, rotate, true);
-                        } catch (OutOfMemoryError e) {
-                            options.inSampleSize = calculateNextSampleSize(options.inSampleSize);
-                            try {
-                                bmp = this.tryToGetBitmap(file, options, rotate, false);
-                            } catch (OutOfMemoryError e2) {
-                                throw new IOException("Unable to load image into memory.");
-                            }
-                        }
-                    } else {
-                        try {
-                            bmp = this.tryToGetBitmap(file, null, rotate, false);
-                        } catch(OutOfMemoryError e) {
-                            options = new BitmapFactory.Options();
-                            options.inSampleSize = 2;
-                            try {
-                                bmp = this.tryToGetBitmap(file, options, rotate, false);
-                            } catch(OutOfMemoryError e2) {
-                                options = new BitmapFactory.Options();
-                                options.inSampleSize = 4;
-                                try {
-                                    bmp = this.tryToGetBitmap(file, options, rotate, false);
-                                } catch (OutOfMemoryError e3) {
-                                    throw new IOException("Unable to load image into memory.");
-                                }
-                            }
-                        }
-                    }
-
-                    file = this.storeImage(bmp, file.getName());
-                    al.add(Uri.fromFile(file).toString());
-                }
-                return al;
-            } catch(IOException e) {
-                try {
-                    asyncTaskError = e;
-                    for (int i = 0; i < al.size(); i++) {
-                        URI uri = new URI(al.get(i));
-                        File file = new File(uri);
-                        file.delete();
-                    }
-                } catch(Exception exception) {
-                    // the finally does what we want to do
-                } finally {
-                    return new ArrayList<String>();
-                }
+            Iterator<Entry<String, Integer>> i = fileNames.iterator();
+            Bitmap bmp;
+            while(i.hasNext()) {
+                Entry<String, Integer> imageInfo = i.next();
+                File file = new File(imageInfo.getKey());
+                al.add(Uri.fromFile(file).toString());
             }
+            return al;
         }
-        
+
         @Override
         protected void onPostExecute(ArrayList<String> al) {
             Intent data = new Intent();
@@ -603,11 +546,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             }
             return bmp;
         }
-        
+
         /*
         * The following functions are originally from
         * https://github.com/raananw/PhoneGap-Image-Resizer
-        * 
+        *
         * They have been modified by Andrew Stephan for Sync OnSet
         *
         * The software is open source, MIT Licensed.
@@ -628,7 +571,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             outStream.close();
             return file;
         }
-    
+
         private Bitmap getResizedBitmap(Bitmap bm, float factor) {
             int width = bm.getWidth();
             int height = bm.getHeight();
@@ -641,24 +584,24 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             return resizedBitmap;
         }
     }
-    
+
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-    
+
         if (height > reqHeight || width > reqWidth) {
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
-    
+
             // Calculate the largest inSampleSize value that is a power of 2 and keeps both
             // height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
                 inSampleSize *= 2;
             }
         }
-    
+
         return inSampleSize;
     }
 
@@ -666,7 +609,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         double logBaseTwo = (int)(Math.log(sampleSize) / Math.log(2));
         return (int)Math.pow(logBaseTwo + 1, 2);
     }
-    
+
     private float calculateScale(int width, int height) {
         float widthScale = 1.0f;
         float heightScale = 1.0f;
@@ -690,7 +633,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 }
             }
         }
-        
+
         return scale;
     }
 }

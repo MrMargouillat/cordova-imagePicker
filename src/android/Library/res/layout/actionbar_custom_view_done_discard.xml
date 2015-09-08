@@ -20,7 +20,8 @@
     android:orientation="horizontal"
     android:divider="?android:attr/dividerVertical"
     android:showDividers="middle"
-    android:dividerPadding="12dp">
+    android:dividerPadding="12dp"
+    android:background="#ff29b3bc">
 
     <include layout="@layout/actionbar_discard_button" />
     <include layout="@layout/actionbar_done_button" />

@@ -20,7 +20,7 @@
     android:layout_width="0dp"
     style="?android:actionButtonStyle" >
     <TextView
-        android:drawableLeft="@drawable/ic_action_discard_light"
+        android:drawableLeft="@drawable/ic_action_discard_dark"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:id="@+id/actionbar_discard_textview"
@@ -29,5 +29,6 @@
         android:layout_width="wrap_content"
         android:paddingRight="20dp"
         android:text="@string/discard"
-        style="?android:actionBarTabTextStyle" />
+        style="?android:actionBarTabTextStyle"
+        android:textColor="#FFFFFF" />
 </FrameLayout>
