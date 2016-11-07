@@ -8,9 +8,9 @@ Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.
 The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
-    phonegap plugin add https://github.com/wymsee/cordova-imagePicker.git
+    phonegap plugin add cordova-plugin-image-picker
 
-    cordova plugin add https://github.com/wymsee/cordova-imagePicker.git
+    cordova plugin add cordova-plugin-image-picker
 
 
 ## Using the plugin
@@ -64,6 +64,18 @@ window.imagePicker.getPictures(
     	// quality of resized image, defaults to 100
     	quality: int (0-100)
     };
+	
+### iOS 10 issues
+
+Starting from iOS 10, Apple started asking for specifying the reason for accessing the user’s photo library, therefore it's mandatory to add `NSPhotoLibraryUsageDescription` entry in the info.plist.
+
+[`NSPhotoLibraryUsageDescription`](https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW17) describes the reason that the app accesses the user’s photo library. When the system prompts the user to allow access, this string is displayed as part of the dialog box. In order to add this entry you must pass the variable `PHOTO_LIBRARY_USAGE_DESCRIPTION` on plugin install.
+
+Example:
+ 
+cordova plugin add cordova-plugin-image-picker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your message"`
+
+Empty string will be added as value if you dont pass the variable 
     
 ### Note for Android Use
 

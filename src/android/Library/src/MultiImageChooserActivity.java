@@ -211,7 +211,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                   imageView.setAlpha(76);
                 }
                 view.setBackgroundColor(selectedColor);
-                view.setBackgroundResource(R.drawable.ic_action_check);
+                // view.setBackgroundResource(R.drawable.ic_action_check);
                 // gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
             }
         } else {
@@ -465,7 +465,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                   imageView.setAlpha(76);
                 }
                 imageView.setBackgroundColor(selectedColor);
-                imageView.setBackgroundResource(R.drawable.ic_action_check);
+                // imageView.setBackgroundResource(R.drawable.ic_action_check);
             } else {
                 if (android.os.Build.VERSION.SDK_INT>=16) {
                   imageView.setImageAlpha(255);
@@ -560,7 +560,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             int index = fileName.lastIndexOf('.');
             String name = fileName.substring(0, index);
             String ext = fileName.substring(index);
-            File file = File.createTempFile(name, ext);
+            File file = File.createTempFile("tmp_" + name, ext);
             OutputStream outStream = new FileOutputStream(file);
             if (ext.compareToIgnoreCase(".png") == 0) {
                 bmp.compress(Bitmap.CompressFormat.PNG, quality, outStream);
